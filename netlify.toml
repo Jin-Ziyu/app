@@ -1,0 +1,17 @@
+[build]
+command = "npm run build"
+publish = "dist"
+[functions]
+directory = "netlify/functions"
+node_bundler = "esbuild"
+included_files = ["legacy.html"]
+[dev]
+command = "npm run dev"
+targetPort = 5173
+port = 8889
+[[headers]]
+for = "/*"
+[headers.values]
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "same-origin"
+X-Frame-Options = "SAMEORIGIN"
