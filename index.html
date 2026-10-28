@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en" data-fq-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Fan Quest</title>
+  <meta name="description" content="Fan Quest — your fandom tracker, avatar studio, mini-games and blind-box collection.">
+  <meta name="theme-color" content="#b9a5ee">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Fan Quest">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-512.png">
+  <link rel="apple-touch-icon" href="icon-512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800;900&family=ZCOOL+KuaiLe&family=Pixelify+Sans:wght@400;500;700&family=Cherry+Bomb+One&family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap">
+  <script src="js/studio/preload.js"></script>
+  <link rel="stylesheet" href="css/legacy.css">
+  <link rel="stylesheet" href="css/studio.css">
+  <link rel="stylesheet" href="css/concert.css">
+  <script src="vendor/supabase-js-2.117.2.js" defer></script>
+  <script src="config.js" defer></script>
+  <script type="module" src="js/studio/main.js"></script>
+</head>
+<body>
+  <div id="fq-boot" class="fq-boot fq-scope" role="status"><div style="display:grid;justify-items:center;gap:12px"><span class="fq-spinner"></span><span>Fan Quest</span></div></div>
+  <noscript><p style="padding:24px;font:700 16px system-ui">Fan Quest needs JavaScript enabled.</p></noscript>
+  <div id="fq-auth-root" class="fq-scope" hidden></div>
+
+  <div id="fq-app" hidden>
+    <aside class="fq-side fq-scope" id="fq-side" aria-label="Main navigation"></aside>
+    <div class="fq-scrim" id="fq-scrim"></div>
+    <div class="fq-main">
+      <header class="fq-top fq-scope" id="fq-top"></header>
+      <main id="fq-view" class="fq-scope" tabindex="-1"></main>
+
+      <!-- Legacy Fan Quest tracker (journey, quests, collect, school, Mochi). Loaded on first visit. -->
+      <div id="fq-legacy-host" hidden>
+      <div class="wrap">
+        <header class="top">
+          <div class="brand">
+            <span id="brandMascot"></span>
+            <div><b>Fan Quest</b><small id="hello">collection & spending</small></div>
+          </div>
+          <div class="hdr-r"><div class="status"><span class="dot" id="dot"></span><span id="statusText">Connecting…</span></div><button class="gear" data-view="settings" aria-label="Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button></div>
+        </header>
+        <div id="importBox" class="notice" hidden></div>
+        <button class="backbar" id="backbar" data-view="home" hidden>‹ Collect</button>
+        <nav class="fandoms" id="fandoms" aria-label="Fandoms"></nav>
+
+        <!-- HOME -->
+        <!-- JOURNEY -->
+        <section id="v-journey" hidden>
+          <div class="scene" id="j-scene"></div>
+          <div class="adv" id="j-adv"></div>
+          <div class="goals-h"><span>📅</span><b id="j-goalsT"></b></div>
+          <div class="goals" id="j-goals"></div>
+          <form class="add-goal" id="goal-form" autocomplete="off"><span>+</span><input id="goal-in" placeholder="Add a goal" maxlength="60"></form>
+          <div class="player" id="j-player"></div>
+          <div hidden><div id="j-map"></div></div>
+          <h2>Up next</h2>
+          <div class="next-grid" id="j-next"></div>
+        </section>
+
+        <!-- SCHOOL -->
+        <section id="v-school" hidden>
+          <div class="sch-hello" id="s-hello"></div>
+          <div class="garden">
+            <div class="g-plot" id="s-plot"></div>
+            <div class="focus" id="s-focus">
+              <div class="fx-tag">FOCUS</div>
+              <div class="fx-sub" id="fx-sub">25 MIN</div>
+              <div class="fx-time" id="fx-time">25:00</div>
+              <div class="fx-bar"><span id="fx-bar"></span></div>
+              <div class="fx-btns"><button class="px" id="fx-reset" aria-label="Reset">↺</button><button class="px big" id="fx-go">START</button><button class="px" id="fx-len" aria-label="Change length">⏱</button></div>
+            </div>
+          </div>
+          <div class="now-card" id="s-now"></div>
+          <h2>Timetable <span class="pill c" id="s-week"></span></h2>
+          <div class="wk-nav"><button class="px sm" id="wk-prev" aria-label="Previous week">‹</button><div class="days" id="s-days"></div><button class="px sm" id="wk-next" aria-label="Next week">›</button></div>
+          <div id="s-classes"></div>
+          <h2>Quizzes &amp; deadlines</h2>
+          <div class="dl-grid" id="s-dl"></div>
+          <form class="add-row" id="dl-form" autocomplete="off"><input id="dl-name" placeholder="Add a deadline, e.g. Lab report" required><input type="date" id="dl-date" required><button class="btn primary" type="submit">Add</button></form>
+          <h2>To-do <span class="pill c">+5 XP each</span></h2>
+          <div class="list todo" id="s-todos"></div>
+          <form class="add-row" id="todo-form" autocomplete="off"><input id="todo-in" placeholder="New task…" required><button class="btn primary" type="submit">Add</button></form>
+          <h2>Quick links</h2>
+          <div class="ql" id="s-links"></div>
+          <div class="ics-row"><label class="btn" for="ics-in">Update timetable (.ics)</label><input type="file" id="ics-in" accept=".ics,text/calendar" hidden><span class="muted" id="ics-msg"></span></div>
+        </section>
+
+        <!-- ME -->
+        <section id="v-me" hidden>
+          <div class="me-card" id="me-card"></div>
+          <h2 id="wardrobe">Mochi's wardrobe</h2>
+          <div class="wardrobe"><div class="wd-stage" id="wd-stage"></div><div class="wd-pick"><b>Dress</b><div class="wd-row" id="wd-dress"></div><b>Headwear</b><div class="wd-row" id="wd-hat"></div></div></div>
+          <h2>School</h2>
+          <button class="big-tile sit" data-view="school"><span class="bt-ic">🎓</span><span class="bt-t"><b>School</b><small>Timetable, focus garden, deadlines and to-dos</small></span><span class="bt-go">GO ›</span></button>
+          <div class="sit-stats" id="me-sitstats"></div>
+          <h2>Portfolio</h2>
+          <a class="big-tile pf" href="https://jin-ziyu.github.io/" target="_blank" rel="noopener"><span class="bt-ic">🤖</span><span class="bt-t"><b>Jin Ziyu · Robotics Systems</b><small>jin-ziyu.github.io</small></span><span class="bt-go">OPEN ›</span></a>
+          <div class="pf-grid">
+            <a href="https://jin-ziyu.github.io/projects/intelligent-pallet-optimization.html" target="_blank" rel="noopener"><span>📦</span><b>Pallet Optimisation</b><small>ROS 2 · Computer Vision</small></a>
+            <a href="https://jin-ziyu.github.io/projects/sep-limo-arena.html" target="_blank" rel="noopener"><span>🛞</span><b>LIMO Navigation</b><small>ROS 1 · SLAM</small></a>
+            <a href="https://jin-ziyu.github.io/projects/hand-gesture-robot.html" target="_blank" rel="noopener"><span>🧤</span><b>Gesture Robot</b><small>Arduino · Bluetooth</small></a>
+            <a href="https://jin-ziyu.github.io/projects/sit-dashboard.html" target="_blank" rel="noopener"><span>🗂️</span><b>SIT Dashboard</b><small>HTML · CSS · JS</small></a>
+          </div>
+          <div class="link-row">
+            <a href="https://github.com/Jin-Ziyu" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/jin-ziyu/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://jin-ziyu.github.io/assets/resume.pdf" target="_blank" rel="noopener">Resume</a>
+            <button class="lr-btn" data-view="settings">Settings</button>
+          </div>
+        </section>
+
+        <section id="v-home">
+          <div class="sec-title"><h1>Collect</h1><span class="muted">Pick a program</span></div>
+          <div class="programs" id="h-programs"></div>
+          <div class="hero">
+            <div class="kicker">All fandoms · all time</div>
+            <div class="big num" id="h-total"></div>
+            <div class="stats" id="h-stats"></div>
+          </div>
+          <div hidden><div id="h-bias"></div><div id="h-tiles"></div></div>
+          <div class="two">
+            <div class="panel"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px"><b class="num" style="font-size:15px">Last 12 months</b><div class="legend" id="h-legend"></div></div><svg class="chart" id="h-chart" viewBox="0 0 560 220" role="img" aria-label="Monthly spending by fandom"></svg></div>
+            <div class="panel"><b class="num" style="font-size:15px">Next concert</b><div id="h-next"></div></div>
+          </div>
+          <h2>Recently logged</h2>
+          <div id="h-recent"></div>
+        </section>
+
+        <!-- LOVE AND DEEPSPACE -->
+        <section id="v-lads" hidden>
+          <div class="hero">
+            <div class="kicker">Love and Deepspace · 恋与深空</div>
+            <h1 class="cn">夏以昼</h1>
+            <div class="big num" id="l-total"></div>
+            <div class="stats" id="l-stats"></div>
+          </div>
+          <div class="panel ship-wait" id="l-ship" hidden></div>
+          <div class="seg" role="tablist" data-seg="lads">
+            <button role="tab" data-sub="cards">Cards</button><button role="tab" data-sub="ingame">In-game</button><button role="tab" data-sub="merch">My merch</button><button role="tab" data-sub="catalog">Catalog</button>
+          </div>
+          <div data-pane="lads:ingame">
+            <div class="panel">
+              <form class="entry" id="spendForm" autocomplete="off">
+                <label class="f">Date<input type="date" id="sp-date" required></label>
+                <label class="f">Amount<input type="number" id="sp-amt" step="0.01" min="0" required placeholder="0.00"></label>
+                <label class="f">Currency<select id="sp-cur"></select></label>
+                <label class="f">What<select id="sp-type"></select></label>
+                <label class="f">For card (optional)<select id="sp-card"></select></label>
+                <label class="f wide">Note<input id="sp-note" placeholder="e.g. 首充双倍, pity at 70"></label>
+                <div class="form-actions wide"><button class="btn primary" type="submit" id="sp-submit">Add spend</button><button class="btn ghost" type="button" id="sp-cancel" hidden>Cancel edit</button><span class="flag" id="sp-flag"></span></div>
+              </form>
+            </div>
+            <div id="spendList"></div>
+          </div>
+          <div data-pane="lads:cards">
+            <div class="panel ring-wrap" style="margin-bottom:14px"><svg id="ring" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"></svg><div><b class="num" style="font-size:20px" id="ringTxt"></b><div class="muted hint">Tap a card when you get it</div></div></div>
+            <div class="chips" id="cardFilter"></div>
+            <div id="cardGrid"></div>
+          </div>
+          <div data-pane="lads:merch">
+            <div class="panel">
+              <form class="entry" id="merchForm" autocomplete="off">
+                <label class="f wide">Item<input id="m-name" required placeholder="e.g. 马口铁徽章"></label>
+                <label class="f">Series / release<input id="m-series" placeholder="e.g. 冥罗之主"></label>
+                <label class="f">Date<input type="date" id="m-date" required></label>
+                <label class="f">Unit price<input type="number" id="m-price" step="0.01" min="0" required></label>
+                <label class="f">Qty<input type="number" id="m-qty" min="1" step="1" value="1" required></label>
+                <label class="f">Currency<select id="m-cur"></select></label>
+                <label class="f">Shipping / fees<input type="number" id="m-ship" step="0.01" min="0" placeholder="0"></label>
+                <label class="f">Bought from<select id="m-src"><option value="official">Official store</option><option value="proxy">Proxy / 代购</option><option value="secondhand">Second-hand</option><option value="event">Event / pop-up</option><option value="other">Other</option></select></label>
+                <label class="f">Status<select id="m-status"><option value="ordered">Ordered</option><option value="shipped">Shipped</option><option value="received">Received</option></select></label>
+                <label class="f">发货 in (days)<input type="number" id="m-shipin" min="0" step="1" inputmode="numeric" placeholder="e.g. 45"></label>
+                <label class="f wide">Note<input id="m-note" placeholder="e.g. 预售, arrives Dec"></label>
+                <div class="form-actions wide"><button class="btn primary" type="submit" id="m-submit">Add merch</button><button class="btn ghost" type="button" id="m-cancel" hidden>Cancel edit</button><span class="flag" id="m-flag"></span></div>
+              </form>
+            </div>
+            <div id="merchList"></div>
+          </div>
+          <div data-pane="lads:catalog">
+            <div class="toolbar"><input type="search" id="catSearch" placeholder="Search 搜索 e.g. 徽章"><span class="muted" style="font-size:12px;font-weight:700">Prices in ¥ from the 官方周边图鉴. Tap + to log it.</span></div>
+            <div id="catalog"></div>
+          </div>
+        </section>
+
+        <!-- K-POP (shared by EXO / SEVENTEEN / and2ble) -->
+        <section id="v-kpop" hidden>
+          <div class="hero">
+            <div class="kicker" id="k-kicker"></div>
+            <h1 id="k-name"></h1>
+            <div class="big num" id="k-total"></div>
+            <div class="stats" id="k-stats"></div>
+          </div>
+          <div class="seg" role="tablist" data-seg="kpop">
+            <button role="tab" data-sub="collection">Collection</button><button role="tab" data-sub="concerts">Concerts</button><button role="tab" data-sub="albums">Albums</button><button role="tab" data-sub="merch">Merch</button><button role="tab" data-sub="bubble">Bubble</button>
+          </div>
+          <div data-pane="kpop:collection">
+            <div class="panel ring-wrap" style="margin-bottom:14px"><svg id="kring" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"></svg><div><b class="num" style="font-size:20px" id="kringTxt"></b><div class="muted hint">Tap a photo when you own it · + logs a price</div></div></div>
+            <div class="toolbar"><input type="search" id="kSearch" placeholder="Search e.g. kit, KAI, Ode to You"></div>
+            <div class="chips" id="kFilter"></div>
+            <div id="kGrid"></div>
+          </div>
+          <div data-pane="kpop:concerts">
+            <div class="panel">
+              <form class="entry" id="f-concerts" autocomplete="off">
+                <label class="f wide">Tour / show<input id="c-tour" required placeholder="e.g. World Tour in Singapore"></label>
+                <label class="f">City<input id="c-city" placeholder="Singapore"></label>
+                <label class="f">Venue<input id="c-venue" placeholder="National Stadium"></label>
+                <label class="f">Show date<input type="date" id="c-date" required></label>
+                <label class="f">Seat / zone<input id="c-seat" placeholder="CAT 1, Sec 203"></label>
+                <label class="f">Ticket currency<select id="c-cur"></select></label>
+                <label class="f">Ticket<input type="number" id="c-ticket" step="0.01" min="0" placeholder="0"></label>
+                <label class="f">Travel &amp; stay currency<select id="c-cur2"></select></label>
+                <label class="f">Flights / transport<input type="number" id="c-travel" step="0.01" min="0" placeholder="0"></label>
+                <label class="f">Hotel<input type="number" id="c-hotel" step="0.01" min="0" placeholder="0"></label>
+                <label class="f">Other (food, fees)<input type="number" id="c-other" step="0.01" min="0" placeholder="0"></label>
+                <label class="f">Status<select id="c-status"><option value="upcoming">Upcoming</option><option value="attended">Attended</option><option value="missed">Didn't go / resold</option></select></label>
+                <label class="f wide">Memories / note<input id="c-note" placeholder="e.g. got fan service, encore setlist"></label>
+                <div class="form-actions wide"><button class="btn primary" type="submit" id="c-submit">Add concert</button><button class="btn ghost" type="button" id="c-cancel" hidden>Cancel edit</button><span class="flag" id="c-flag"></span></div>
+              </form>
+            </div>
+            <div id="list-concerts"></div>
+          </div>
+          <div data-pane="kpop:albums">
+            <div class="panel">
+              <form class="entry" id="f-albums" autocomplete="off">
+                <label class="f wide">Album<input id="a-title" required placeholder="Album name"></label>
+                <label class="f">Version<input id="a-ver" placeholder="Photobook / Digipack / Weverse"></label>
+                <label class="f">Date bought<input type="date" id="a-date" required></label>
+                <label class="f">Qty<input type="number" id="a-qty" min="1" step="1" value="1"></label>
+                <label class="f">Unit price<input type="number" id="a-price" step="0.01" min="0" required></label>
+                <label class="f">Currency<select id="a-cur"></select></label>
+                <label class="f">Shipping / fees<input type="number" id="a-ship" step="0.01" min="0" placeholder="0"></label>
+                <label class="f">Bought from<input id="a-src" placeholder="Weverse Shop, Ktown4u, local GO"></label>
+                <label class="f wide">Photocards pulled<input id="a-pc" placeholder="Who did you pull?"></label>
+                <div class="form-actions wide"><button class="btn primary" type="submit" id="a-submit">Add album</button><button class="btn ghost" type="button" id="a-cancel" hidden>Cancel edit</button><span class="flag" id="a-flag"></span></div>
+              </form>
+            </div>
+            <div id="list-albums"></div>
+          </div>
+          <div data-pane="kpop:bubble">
+            <div class="panel" id="bubbleSubs" style="margin-bottom:14px"></div>
+            <div class="panel">
+              <form class="entry" id="f-bubble" autocomplete="off">
+                <label class="f">Member<input id="b-member" required placeholder="Who you subscribe to" list="b-members"></label>
+                <datalist id="b-members"></datalist>
+                <label class="f">Date paid<input type="date" id="b-date" required></label>
+                <label class="f">Amount<input type="number" id="b-amount" step="0.01" min="0" required placeholder="e.g. 5.98"></label>
+                <label class="f">Currency<select id="b-cur"></select></label>
+                <label class="f">Covers<select id="b-months"><option value="1">1 month</option><option value="3">3 months</option><option value="6">6 months</option><option value="12">12 months</option></select></label>
+                <label class="f wide">Note<input id="b-note" placeholder="e.g. App Store, family bundle"></label>
+                <div class="form-actions wide"><button class="btn primary" type="submit" id="b-submit">Add Bubble payment</button><button class="btn ghost" type="button" id="b-cancel" hidden>Cancel edit</button><span class="flag" id="b-flag"></span></div>
+              </form>
+            </div>
+            <div id="list-bubble"></div>
+          </div>
+          <div data-pane="kpop:merch">
+            <div class="panel">
+              <form class="entry" id="f-kmerch" autocomplete="off">
+                <label class="f wide">Item<input id="k-item" required placeholder="e.g. Official lightstick"></label>
+                <label class="f">Type<select id="k-kind"><option value="lightstick">Lightstick</option><option value="tour">Tour merch</option><option value="sg">Season's greetings</option><option value="pc">Photocards / trading</option><option value="membership">Membership / fanclub</option><option value="fanmade">Fan-made</option><option value="other">Other</option></select></label>
+                <label class="f">Date<input type="date" id="k-date" required></label>
+                <label class="f">Qty<input type="number" id="k-qty" min="1" step="1" value="1"></label>
+                <label class="f">Unit price<input type="number" id="k-price" step="0.01" min="0" required></label>
+                <label class="f">Currency<select id="k-cur"></select></label>
+                <label class="f">Shipping / fees<input type="number" id="k-ship" step="0.01" min="0" placeholder="0"></label>
+                <label class="f wide">Note<input id="k-note" placeholder="e.g. bought at the concert, member version"></label>
+                <div class="form-actions wide"><button class="btn primary" type="submit" id="k-submit">Add merch</button><button class="btn ghost" type="button" id="k-cancel" hidden>Cancel edit</button><span class="flag" id="k-flag"></span></div>
+              </form>
+            </div>
+            <div id="list-kmerch"></div>
+          </div>
+        </section>
+
+        <!-- REWARDS -->
+        <section id="v-game" hidden>
+          <div class="player big-player" id="g-player"></div>
+          <h2>Weekly quests <span class="pill c" id="g-week"></span></h2>
+          <div class="quests" id="g-quests"></div>
+          <h2>Budget quest</h2>
+          <div class="panel" id="g-budget"></div>
+          <h2>Bias love meter</h2>
+          <div class="list love" id="g-love"></div>
+          <h2>Badges <span class="pill c" id="g-badgeCount"></span></h2>
+          <div class="badges" id="g-badges"></div>
+        </section>
+
+        <!-- BIASES -->
+        <section id="v-bias" hidden>
+          <div class="bias-pick" id="biasPick"></div>
+          <div class="hero" id="biasHero"></div>
+          <div class="seg" role="tablist" data-seg="bias"><button role="tab" data-sub="coll">Collection</button><button role="tab" data-sub="log">Photocards &amp; items</button></div>
+          <div data-pane="bias:coll"><div id="biasColl"></div></div>
+          <div data-pane="bias:log">
+            <div class="panel">
+              <form class="entry" id="f-bias" autocomplete="off">
+                <label class="f wide">Item<input id="x-item" required placeholder="e.g. Lucky draw photocard"></label>
+                <label class="f">Type<select id="x-kind"><option value="pc">Photocard</option><option value="album">Album / member ver.</option><option value="merch">Merch</option><option value="fansign">Fansign / event</option><option value="other">Other</option></select></label>
+                <label class="f">Date<input type="date" id="x-date" required></label>
+                <label class="f">Qty<input type="number" id="x-qty" min="1" step="1" value="1"></label>
+                <label class="f">Price<input type="number" id="x-price" step="0.01" min="0" required></label>
+                <label class="f">Currency<select id="x-cur"></select></label>
+                <label class="f wide">Note<input id="x-note" placeholder="e.g. traded, from Weverse POB"></label>
+                <div class="form-actions wide"><button class="btn primary" type="submit" id="x-submit">Add for him ♡</button><button class="btn ghost" type="button" id="x-cancel" hidden>Cancel edit</button><span class="flag" id="x-flag"></span></div>
+              </form>
+            </div>
+            <div id="biasList"></div>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="v-settings" hidden>
+          <h2>Currency</h2>
+          <div class="panel">
+            <p class="muted" style="margin-top:0;font-weight:600">Every entry keeps the currency you paid in. Totals convert to your home currency with these rates. Update them whenever you like.</p>
+            <div class="rates" id="rates"></div>
+            <div class="form-actions" style="margin-top:12px"><button class="btn primary" id="saveRates">Save rates</button></div>
+          </div>
+          <h2>Backup</h2>
+          <div class="panel">
+            <p class="muted" style="margin-top:0;font-weight:600">Copy everything as text to keep a backup, or paste one in to restore it.</p>
+            <textarea id="backup" spellcheck="false"></textarea>
+            <div class="form-actions" style="margin-top:10px"><button class="btn" id="copyBackup">Copy backup</button><button class="btn" id="restoreBackup">Restore from text</button><span class="muted" id="restoreMsg" style="font-size:12px"></span></div>
+          </div>
+        </section>
+      </div>
+      <div class="toast" id="toast"></div>
+      <div class="lvl-modal" id="lvlModal" hidden><div class="lm-card"><div class="lm-top">🔥 YOU DID IT! 🔥</div><div class="lm-sub" id="lmSub"></div>
+        <div class="lm-stats"><div><span>⭐</span><b id="lmXp"></b><small>total XP</small></div><div><span>🔥</span><b id="lmStreak"></b><small>day streak</small></div></div>
+        <div class="lm-badge" id="lmBadge" hidden><div><b id="lmBadgeT"></b><small id="lmBadgeD"></small></div><span class="lm-coin" id="lmBadgeE"></span></div>
+        <button class="btn primary lm-go" id="lmGo">Continue</button></div></div>
+      </div>
+    </div>
+    <nav class="fq-tabbar fq-scope" id="fq-tabbar" aria-label="Quick navigation"></nav>
+  </div>
+</body>
+</html>

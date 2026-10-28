@@ -1,0 +1,20 @@
+{
+  "name": "fan-quest",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Fan Quest — fan tracker + avatar collection studio (static site + Supabase)",
+  "scripts": {
+    "dev": "node dev/server.mjs",
+    "seed": "node scripts/build-seed.mjs",
+    "build": "node scripts/build-config.mjs",
+    "test": "node --test tests/sql.test.mjs",
+    "test:e2e": "node tests/e2e.mjs",
+    "create-demo-user": "node scripts/create-demo-user.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.11",
+    "@supabase/supabase-js": "2.117.2",
+    "playwright": "1.63.0"
+  }
+}

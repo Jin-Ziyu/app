@@ -1,0 +1,204 @@
+/* ============================================================
+   Fan Quest · White concert theme (v3.8)
+   The concert-page layout in white: bright white stage with a
+   faint dotted light field and a soft silver spotlight, white
+   cards with a silver glow, outlined pills, and your picture
+   lit up like a lightstick.
+   ============================================================ */
+
+:root{
+  --fq-title:"Cherry Bomb One","Baloo 2","ZCOOL KuaiLe","PingFang SC","Noto Sans SC",ui-rounded,system-ui,sans-serif;
+  --glow:#e3d3c4; --sil:#6b4a35; --pinkglow:#f4b9cd;
+}
+:root[data-fq-mode] body:not(.stage){
+  --bg:#ffffff; --surface:#ffffff; --sunk:#f6f7fb; --ink:#5c3d2a; --muted:#a08672; --fq-head:#5c3d2a; --soft:#f1f2f8;
+  --line:#ebecf3; --edge:#e3e5ef; --acc:#6b4a35; --acc-2:#f4b9cd; --acc-ink:#ffffff;
+  color-scheme:light;
+  background:radial-gradient(ellipse 90% 45% at 50% -8%,rgba(232,214,196,.55),transparent 70%),
+    radial-gradient(rgba(92,61,42,.10) 1.2px,transparent 1.7px) 0 0/20px 20px,#ffffff!important;
+  background-size:auto,20px 20px,auto!important;background-attachment:fixed!important;background-color:#ffffff!important}
+/* the light/dark switch only changes the spotlight tint */
+:root[data-fq-mode="dark"] body:not(.stage){
+  background:radial-gradient(ellipse 90% 45% at 50% -8%,rgba(244,185,205,.45),transparent 70%),
+    radial-gradient(rgba(92,61,42,.10) 1.2px,transparent 1.7px) 0 0/20px 20px,#ffffff!important;
+  background-size:auto,20px 20px,auto!important;background-color:#ffffff!important}
+
+/* ---------- type ---------- */
+:root body:not(.stage) .fq-scope h1,:root body:not(.stage) .fq-scope h2{color:var(--ink)!important}
+.fq-head h1{font-size:clamp(32px,4.4vw,46px)!important}
+.fq-head p{color:var(--muted)}
+.fq-mono{font:800 12px var(--fq-ui);letter-spacing:.14em;text-transform:uppercase}
+
+/* ---------- white cards with a silver glow ---------- */
+.fq-card{background:#fff;border:1.5px solid var(--edge);border-radius:22px;box-shadow:0 0 24px -12px var(--glow),0 14px 28px -22px rgba(92,61,42,.35);color:var(--ink)}
+.fq-card.gold,.fq-card.tint,.fq-card.tint2{background:#fff}
+.fq-card[data-w] .fq-card-h{flex-wrap:nowrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.fq-card[data-w] .fq-card-h .fq-h2{display:flex!important;align-items:center;gap:10px;white-space:nowrap;min-width:0;font-size:21px!important}
+.fq-card[data-w] .fq-card-h .fq-h2 .fq-ic{display:none}
+.fq-card[data-w] .fq-card-h .fq-btn{flex:none;font-size:0;gap:0;width:34px;height:34px;padding:0;justify-content:center;border-radius:50%;background:#fff;border:1.5px solid var(--edge);box-shadow:none;color:var(--ink)}
+.fq-card[data-w] .fq-card-h .fq-btn .fq-ic{width:17px;height:17px}
+.fq-card[data-w] .fq-card-h .fq-pill{background:#fff;color:var(--ink);border:1.5px solid var(--edge)}
+.fq-tno{font:800 11px/1 var(--fq-ui);font-style:normal;padding:5px 10px;border-radius:99px;background:var(--sil);color:#fff;flex:none;letter-spacing:.08em;text-transform:uppercase}
+.fq-grid>.fq-card[data-w]{transition:transform .25s,box-shadow .25s}
+.fq-grid>.fq-card[data-w]:hover{transform:translateY(-3px);box-shadow:0 0 30px -8px var(--glow),0 18px 30px -22px rgba(92,61,42,.4)}
+
+/* tiles: outlined pills like the concert stats */
+.fq-fandom,.fq-stat{border-radius:16px;background:#fff;border:1.5px solid var(--edge);color:var(--ink)}
+.fq-fandom:hover{border-color:var(--glow);box-shadow:0 0 18px -6px var(--glow)}
+.fq-fandom small,.fq-stat span{color:var(--muted)}
+a[href="#/tracker/lads"].fq-fandom{--glow:#9fc0f5}a[href="#/tracker/exo"].fq-fandom{--glow:#c3c8d8}a[href="#/tracker/svt"].fq-fandom{--glow:#f4b9cd}a[href="#/tracker/and2ble"].fq-fandom{--glow:#7be89c}
+.fq-card .fq-bar{border-radius:99px;background:var(--sunk);height:8px}
+.fq-card .fq-bar>span{border-radius:99px}
+.fq-days{border-radius:12px;background:#fff!important;color:var(--ink)!important;border:1.5px solid var(--edge)}
+.fq-days.hot{background:var(--pinkglow)!important;color:var(--ink)!important;border-color:transparent}
+
+/* ---------- buttons & inputs ---------- */
+.fq-btn{border-radius:99px;background:#fff;color:var(--ink);border:1.5px solid var(--edge);box-shadow:none}
+.fq-btn:hover{border-color:#c3c8d8}
+.fq-btn.primary{background:var(--sil);color:#fff;border-color:transparent;box-shadow:0 8px 18px -10px rgba(92,61,42,.6)}
+.fq-btn.ghost{background:transparent;border-color:transparent}
+.fq-input{border-radius:12px;background:#fff;border:1.5px solid var(--edge);color:var(--ink)}
+.fq-input:focus{border-color:var(--sil);box-shadow:0 0 0 3px rgba(92,61,42,.08)}
+.fq-seg{background:#fff;border:1.5px solid var(--edge)}
+.fq-seg button{color:var(--muted)}
+.fq-seg button[aria-selected="true"],.fq-chip[aria-pressed="true"]{background:var(--sil)!important;color:#fff!important;border-color:transparent!important}
+.fq-chip{background:#fff;color:var(--ink);border-color:var(--edge)}
+
+/* ---------- hero: white concert banner ---------- */
+.fq-card.fq-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;position:relative;overflow:hidden;min-height:210px;
+  padding:clamp(22px,3.6vw,40px);border-radius:26px;border:1.5px solid var(--edge);
+  background:radial-gradient(circle at 84% 48%,rgba(232,214,196,.7),transparent 52%),linear-gradient(160deg,#ffffff,#f4f5fa)!important;
+  box-shadow:0 0 30px -12px var(--glow),0 20px 36px -24px rgba(92,61,42,.4)}
+.fq-card.fq-hero::after{content:"";position:absolute;inset:auto 0 0;height:46px;pointer-events:none;opacity:.9;
+  background:radial-gradient(circle at 20% 100%,rgba(200,170,140,.8) 0 2.5px,transparent 3.5px) 0 0/34px 26px,radial-gradient(circle at 60% 100%,rgba(244,160,190,.8) 0 2.5px,transparent 3.5px) 0 0/47px 30px;
+  -webkit-mask:linear-gradient(transparent,#000);mask:linear-gradient(transparent,#000);animation:fq-crowd 2.2s ease-in-out infinite alternate}
+.fq-hero-txt{position:relative;z-index:1;gap:12px!important;align-items:flex-start;max-width:720px}
+.fq-hero .fq-mono{color:var(--muted)}
+:root body:not(.stage) .fq-scope .fq-hero h1{font-size:clamp(34px,5vw,58px)!important;line-height:1.02;color:var(--ink)!important;text-shadow:none!important}
+.fq-msg{display:flex;flex-direction:column;gap:2px;padding:10px 16px;border-radius:14px;background:#fff;border:1.5px solid var(--edge);color:var(--ink);font-weight:800;max-width:540px}
+.fq-msg b{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fq-love{flex-direction:row;flex-wrap:wrap;gap:8px}
+.fq-love a{padding:6px 6px 6px 12px;border-radius:14px;background:#fff;border:1.5px solid var(--edge);color:var(--ink);font-size:13px}
+.fq-love a .fq-ic{color:#e36d97;fill:var(--pinkglow)}
+.fq-love a b{background:var(--sil)!important;color:#fff;padding:2px 9px;border-radius:99px}
+.fq-hero-pic{position:relative;z-index:1;width:clamp(140px,16vw,190px);aspect-ratio:1;display:grid;place-items:center;
+  filter:drop-shadow(0 0 16px rgba(200,170,140,.9)) drop-shadow(0 10px 18px rgba(92,61,42,.18));animation:fq-sway 3.4s ease-in-out infinite}
+.fq-hero-pic img{width:100%;height:100%;object-fit:contain}
+@media (max-width:620px){.fq-card.fq-hero{grid-template-columns:1fr;justify-items:center}.fq-hero-pic{order:-1}.fq-hero-txt{align-items:center;text-align:center;margin:0 auto}.fq-love{justify-content:center}}
+
+/* ---------- picture spots ---------- */
+.fq-pic{overflow:hidden;background:radial-gradient(circle,#fff,#eef0f7)!important;display:grid;place-items:center}
+.fq-pic img{width:92%;height:92%;object-fit:contain;margin-top:8%}
+.fq-me .fq-mini.fq-pic{width:46px;height:46px;border-radius:50%;box-shadow:0 0 0 1.5px var(--edge),0 0 14px -4px var(--glow)}
+.fq-prof-initial{width:96px;height:96px;flex:none;border-radius:50%;box-shadow:0 0 0 1.5px var(--edge),0 0 26px -6px var(--glow)}
+
+/* ---------- sidebar ---------- */
+.fq-side{background:radial-gradient(rgba(92,61,42,.08) 1.2px,transparent 1.7px) 0 0/20px 20px,#ffffff;border-right:1.5px solid var(--edge)}
+.fq-brand .fq-logo{border-radius:50%;border:0;background:var(--sil);color:#fff;box-shadow:0 6px 14px -6px rgba(92,61,42,.6)}
+:root body .fq-brand b{color:var(--ink)!important}
+.fq-brand small{text-transform:uppercase;letter-spacing:.14em;font-size:10.5px;color:var(--muted)}
+.fq-me{border:1.5px solid var(--edge);background:#fff;box-shadow:none;border-radius:18px}
+.fq-nav-label{text-transform:uppercase;letter-spacing:.14em;font-size:10.5px;color:var(--muted)}
+.fq-nav a{border-radius:14px;border:0;color:var(--ink)}
+.fq-nav a:hover{background:var(--sunk)}
+.fq-nav a[aria-current="page"]{background:var(--sil);color:#fff;border:0;box-shadow:0 8px 18px -10px rgba(92,61,42,.6)}
+.fq-side-foot .fq-btn{background:transparent;border-color:transparent;color:var(--muted)}
+
+/* ---------- top bar & tab bar ---------- */
+.fq-top{background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1.5px solid var(--edge)}
+.fq-top .fq-iconbtn{background:#fff;color:var(--ink);border-color:var(--edge)}
+@media (max-width:900px){
+  .fq-tabbar{background:#fff!important;border:1.5px solid var(--edge)!important;border-radius:22px!important;box-shadow:0 14px 28px -14px rgba(92,61,42,.4)!important}
+  .fq-tabbar a,.fq-tabbar button{color:var(--muted)!important}
+  .fq-tabbar a[aria-current="page"]{background:var(--sil)!important;color:#fff!important;border-radius:16px}
+}
+
+/* ---------- Fan tracker pages: white cards everywhere ---------- */
+body:not(.stage) #fq-legacy-host{--surface:#ffffff;--bg:#ffffff;--ink:#5c3d2a;--muted:#a08672;--lav-d:#7a5238;--fq-head:#5c3d2a}
+
+@keyframes fq-sway{0%,100%{transform:rotate(6deg)}50%{transform:rotate(-6deg)}}
+@keyframes fq-crowd{from{transform:translateY(3px)}to{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.fq-hero-pic,.fq-card.fq-hero::after{animation:none}}
+/* tracker headings and labels in brown too */
+body:not(.stage) #fq-legacy-host h2,body:not(.stage) #fq-legacy-host .goals-h,body:not(.stage) #fq-legacy-host .goals-h b,body:not(.stage) #fq-legacy-host .sec-title h1,body:not(.stage) #fq-legacy-host .sch-hello b,body:not(.stage) #fq-legacy-host .sch-hello small,body:not(.stage) #fq-legacy-host .ring-wrap,body:not(.stage) #fq-legacy-host .month-h,body:not(.stage) #fq-legacy-host .status,body:not(.stage) #fq-legacy-host .sec-title span,
+#fq-legacy-host .wd-stage span,#fq-legacy-host .wd-pick>b{color:#5c3d2a!important}
+
+/* ---------- sidebar brand as a concert ticket ---------- */
+.fq-ticket{--tk:#6b4a35;position:relative;display:flex;align-items:stretch;margin:2px 2px 12px;text-decoration:none;color:var(--ink);
+  filter:drop-shadow(0 8px 14px rgba(92,61,42,.18));transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.fq-ticket:hover{transform:rotate(-1.5deg) translateY(-2px)}
+.fq-ticket-stub,.fq-ticket-main{background:#fff;border:1.5px solid #e6d8cb}
+.fq-ticket-stub{flex:none;width:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:14px 0 0 14px;border-right:0;
+  background:linear-gradient(180deg,#7a5238,#5c3d2a);color:#fff;border-color:#5c3d2a}
+.fq-ticket-stub i{font:800 9px/1 var(--fq-ui);font-style:normal;letter-spacing:.18em;writing-mode:vertical-rl;transform:rotate(180deg)}
+.fq-ticket-stub b{font:400 15px/1 var(--fq-title)}
+.fq-ticket-main{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding:8px 12px 8px 14px;border-radius:0 14px 14px 0;border-left:2px dashed #d9c3b0;
+  -webkit-mask:radial-gradient(circle 7px at 0 0,#0000 98%,#000) top left/100% 51% no-repeat,radial-gradient(circle 7px at 0 100%,#0000 98%,#000) bottom left/100% 51% no-repeat;
+          mask:radial-gradient(circle 7px at 0 0,#0000 98%,#000) top left/100% 51% no-repeat,radial-gradient(circle 7px at 0 100%,#0000 98%,#000) bottom left/100% 51% no-repeat}
+.fq-ticket-kicker{font:800 9px/1.2 var(--fq-ui);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:root body .fq-ticket-main b{font:400 22px/1 var(--fq-title);color:var(--ink);white-space:nowrap}
+.fq-ticket-meta{display:flex;justify-content:space-between;gap:6px;font:800 9px/1.2 var(--fq-ui);letter-spacing:.1em;color:var(--muted);white-space:nowrap}
+.fq-ticket-bar{display:block;height:10px;margin-top:3px;opacity:.75;
+  background:repeating-linear-gradient(90deg,#5c3d2a 0 1px,transparent 1px 3px,#5c3d2a 3px 5px,transparent 5px 6px,#5c3d2a 6px 7px,transparent 7px 10px)}
+/* collapsed sidebar: just the stub */
+:root[data-fq-sidebar="collapsed"] .fq-ticket-main{display:none}
+:root[data-fq-sidebar="collapsed"] .fq-ticket{justify-content:center}
+:root[data-fq-sidebar="collapsed"] .fq-ticket-stub{border-radius:12px;width:46px;height:58px}
+
+/* ============================================================
+   Fandom concert pages (EXO, SEVENTEEN, and2ble) in bright colours.
+   Each keeps its lightstick colour, now on a light stage.
+   ============================================================ */
+body.stage-exo{--pale:#eef2fb;--pale2:#f8f9fd;--hi:#5f6f94;--glow:#b9c6e6}
+body.stage-svt{--pale:#fdecef;--pale2:#eaf0fb;--hi:#d26d8b;--glow:#f4b9cd}
+body.stage-and2ble{--pale:#e7fbee;--pale2:#f4fde0;--hi:#1f9d52;--glow:#7be89c}
+:root[data-fq-mode] body.stage{
+  --bg:#ffffff;--surface:#ffffff;--sunk:var(--pale2);--ink:#5c3d2a;--muted:#a08672;--soft:var(--pale);--edge:color-mix(in srgb,var(--glow) 55%,#e6d8cb);
+  color-scheme:light;color:var(--ink);
+  background:radial-gradient(ellipse 90% 45% at 50% -8%,color-mix(in srgb,var(--glow) 55%,transparent),transparent 70%),
+    radial-gradient(color-mix(in srgb,var(--hi) 22%,transparent) 1.3px,transparent 1.8px) 0 0/20px 20px,
+    linear-gradient(180deg,var(--pale),#ffffff 60%)!important;
+  background-attachment:fixed!important;background-color:#fff!important}
+body.stage #fq-legacy-host .hero{
+  background:radial-gradient(circle at 84% 45%,color-mix(in srgb,var(--glow) 75%,transparent),transparent 55%),linear-gradient(140deg,var(--pale2),var(--pale))!important;
+  color:var(--ink)!important;border:1.5px solid var(--edge)!important;box-shadow:0 0 30px -10px var(--glow),0 18px 30px -22px rgba(92,61,42,.35)!important}
+body.stage #fq-legacy-host .hero .kicker{color:var(--hi)!important;opacity:1}
+body.stage #fq-legacy-host .hero h1,body.stage #fq-legacy-host .hero .big{color:#5c3d2a!important;text-shadow:none!important}
+body.stage #fq-legacy-host .hero h1 *,body.stage #fq-legacy-host .hero .big *{color:inherit}
+body.stage #fq-legacy-host .hero .stat{background:rgba(255,255,255,.8)!important;border-color:var(--edge)!important}
+body.stage #fq-legacy-host .hero .stat b{color:#5c3d2a!important}
+body.stage #fq-legacy-host .hero .stat small,body.stage #fq-legacy-host .hero .stat span{color:var(--muted)!important}
+body.stage #fq-legacy-host .hero h1 img.logo{filter:brightness(0) invert(38%) sepia(90%) saturate(700%) hue-rotate(100deg) drop-shadow(0 0 6px rgba(73,221,122,.6))}
+body.stage #fq-legacy-host .ls{filter:drop-shadow(0 0 14px var(--glow)) drop-shadow(0 8px 16px rgba(92,61,42,.25))}
+/* tabs, chips, buttons */
+body.stage #fq-legacy-host .btn.primary,body.stage #fq-legacy-host .chip[aria-pressed="true"],body.stage #fq-legacy-host .seg button[aria-selected="true"],body.stage #fq-legacy-host .bp[aria-pressed="true"]{background:var(--hi)!important;color:#fff!important;box-shadow:0 6px 14px -8px var(--hi)!important}
+body.stage #fq-legacy-host .seg,body.stage #fq-legacy-host .chip{background:#fff;color:var(--ink);border-color:var(--edge)}
+body.stage #fq-legacy-host input,body.stage #fq-legacy-host select,body.stage #fq-legacy-host textarea{background:#fff!important;color:var(--ink)!important;border-color:var(--edge)!important}
+body.stage #fq-legacy-host input::placeholder{color:#b9a596}
+/* cards and collection items */
+body.stage #fq-legacy-host .card,body.stage #fq-legacy-host .item{background:#fff;color:var(--ink)}
+body.stage #fq-legacy-host .item.got{background:color-mix(in srgb,var(--glow) 18%,#fff)!important;border-color:var(--hi)!important;box-shadow:0 0 18px -6px var(--glow)!important}
+body.stage #fq-legacy-host .item:not(.got) .kph img{filter:grayscale(.35) brightness(1.1);opacity:.7}
+body.stage #fq-legacy-host .item .kph{background:var(--pale2)}
+:root body.stage .fq-top .fq-title{color:#5c3d2a!important}
+:root body:not(.stage) .fq-top .fq-title{color:#5c3d2a!important}
+body.stage #fq-legacy-host .item .add{background:#fff;color:var(--hi);border-color:var(--edge)}
+body.stage #fq-legacy-host .cat-h h3 small,body.stage #fq-legacy-host .release>h3 .pill,body.stage #fq-legacy-host .pill.c,body.stage #fq-legacy-host .pill.c2{background:color-mix(in srgb,var(--hi) 14%,#fff)!important;color:var(--hi)!important}
+body.stage #fq-legacy-host .series{color:var(--hi)}
+body.stage #fq-legacy-host .ticket .days,body.stage #fq-legacy-host .xpbar span,body.stage #fq-legacy-host .qbar span{background:var(--hi);color:#fff}
+body.stage #fq-legacy-host .av.big{background:var(--pale);color:var(--ink)}
+/* headings and progress text readable on white */
+body.stage #fq-legacy-host h1,body.stage #fq-legacy-host h2,body.stage #fq-legacy-host h3,body.stage #fq-legacy-host .sec-title,body.stage #fq-legacy-host .sec-title *,body.stage #fq-legacy-host .prog b,body.stage #fq-legacy-host .prog strong{color:#5c3d2a;text-shadow:none}
+body.stage #fq-legacy-host .backbar,body.stage #fq-legacy-host .gear{background:#fff;color:var(--ink);border:1.5px solid var(--edge)}
+body.stage #fq-legacy-host nav.fandoms{background:#fff;box-shadow:0 -1px 0 var(--edge)}
+body.stage #fq-legacy-host .item .ph{background:var(--pale2)!important}
+body.stage #fq-legacy-host .item:not(.got) .kph img{opacity:.85}
+#fq-legacy-host .backbar{background:#fff!important;color:#5c3d2a!important;border:1.5px solid #e6d8cb}
+
+/* Dokyeom photocards: show the whole card in portrait */
+#fq-legacy-host .item .ph:has(img[src^="assets/dk/"]){aspect-ratio:5/7;height:auto}
+#fq-legacy-host .item .ph img[src^="assets/dk/"]{object-fit:contain;width:100%;height:100%;background:#fff}
+#fq-legacy-host .items:has(img[src^="assets/dk/"]){grid-template-columns:repeat(auto-fill,minmax(72px,1fr))!important;gap:8px!important}
+#fq-legacy-host .items:has(img[src^="assets/dk/"]) .item{padding:4px!important;border-radius:12px}
+#fq-legacy-host .items:has(img[src^="assets/dk/"]) .item .n{font-size:10.5px;text-align:center;margin-top:2px}
+#fq-legacy-host .items:has(img[src^="assets/dk/"]) .item .add{transform:scale(.8);transform-origin:right bottom}
